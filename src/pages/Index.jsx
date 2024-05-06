@@ -31,16 +31,16 @@ const Index = () => {
   return (
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
       <VStack spacing={4}>
-        <Text fontSize="2xl" mb={4}>
+        <Text fontSize="3xl" mb={4} fontWeight="bold">
           Todo List
         </Text>
         <HStack>
-          <Input placeholder="Add a new task" value={input} onChange={handleInputChange} onKeyPress={handleKeyPress} />
-          <IconButton aria-label="Add todo" icon={<FaPlus />} onClick={handleAddTodo} />
+          <Input placeholder="Add a new task" value={input} onChange={handleInputChange} onKeyPress={handleKeyPress} boxShadow="sm" borderRadius="md" />
+          <IconButton aria-label="Add todo" icon={<FaPlus />} onClick={handleAddTodo} boxShadow="sm" borderRadius="md" />
         </HStack>
         <List spacing={3} width="100%">
           {todos.map((todo, index) => (
-            <ListItem key={index} display="flex" justifyContent="space-between" alignItems="center">
+            <ListItem key={index} display="flex" justifyContent="space-between" alignItems="center" _hover={{ bg: "gray.100" }} p={2} borderRadius="md">
               <Text>{todo}</Text>
               <IconButton aria-label="Delete todo" icon={<FaTrash />} onClick={() => handleDeleteTodo(index)} />
             </ListItem>

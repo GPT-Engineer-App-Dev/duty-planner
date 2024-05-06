@@ -4,7 +4,7 @@ import { FaHome } from "react-icons/fa";
 
 function Navbar() {
   return (
-    <Flex as="nav" bg="blue.500" color="white" padding="4" justifyContent="space-between">
+    <Flex as="nav" bgGradient="linear(to-r, teal.500, green.500)" color="white" padding="4" justifyContent="space-between" boxShadow="md">
       <Box>
         <Link href="/" display="flex" alignItems="center">
           <FaHome />
