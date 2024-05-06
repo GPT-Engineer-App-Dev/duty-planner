@@ -47,6 +47,9 @@ const Index = () => {
           ))}
         </List>
       </VStack>
+      <Text as="footer" color="gray.600" width="full" textAlign="center" mt={10}>
+        © 2024 Todo App. All rights reserved.
+      </Text>
     </Container>
   );
 };
