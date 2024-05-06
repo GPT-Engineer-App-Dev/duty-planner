@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Container, VStack, Input, HStack, List, ListItem, IconButton, Text } from "@chakra-ui/react";
-import { FaTrash, FaPlus } from "react-icons/fa";
+import { FaTrash, FaPlus, FaEdit } from "react-icons/fa";
 
 const Index = () => {
   const [todos, setTodos] = useState([]);
@@ -22,9 +22,29 @@ const Index = () => {
     setInput(event.target.value);
   };
 
-  const handleKeyPress = (event) => {
+  const [editIndex, setEditIndex] = useState(-1);
+  const [editInput, setEditInput] = useState("");
+
+  const handleEditTodo = (index) => {
+    setEditIndex(index);
+    setEditInput(todos[index]);
+  };
+
+  const handleUpdateTodo = (index, value) => {
+    const updatedTodos = [...todos];
+    updatedTodos[index] = value;
+    setTodos(updatedTodos);
+    setEditIndex(-1);
+    setEditInput("");
+  };
+
+  const handleEditInputChange = (event) => {
+    setEditInput(event.target.value);
+  };
+
+  const handleEditKeyPress = (event, index) => {
     if (event.key === "Enter") {
-      handleAddTodo();
+      handleUpdateTodo(index, editInput);
     }
   };
 
@@ -35,16 +55,33 @@ const Index = () => {
           Todo List
         </Text>
         <HStack>
-          <Input placeholder="Add a new task" value={input} onChange={handleInputChange} onKeyPress={handleKeyPress} boxShadow="sm" borderRadius="md" />
+          <Input placeholder="Add a new task" value={input} onChange={handleInputChange} onKeyPress={(event) => {
+            if (event.key === "Enter") {
+              handleAddTodo();
+            }
+          }} boxShadow="sm" borderRadius="md" />
           <IconButton aria-label="Add todo" icon={<FaPlus />} onClick={handleAddTodo} boxShadow="sm" borderRadius="md" />
         </HStack>
         <List spacing={3} width="100%">
-          {todos.map((todo, index) => (
-            <ListItem key={index} display="flex" justifyContent="space-between" alignItems="center" _hover={{ bg: "gray.100" }} p={2} borderRadius="md">
-              <Text>{todo}</Text>
-              <IconButton aria-label="Delete todo" icon={<FaTrash />} onClick={() => handleDeleteTodo(index)} />
-            </ListItem>
-          ))}
+          {todos.map((todo, index) => {
+            if (index === editIndex) {
+              return (
+                <ListItem key={index} display="flex" justifyContent="space-between" alignItems="center" _hover={{ bg: "gray.100" }} p={2} borderRadius="md">
+                  <Input value={editInput} onChange={handleEditInputChange} onKeyPress={(event) => handleEditKeyPress(event, index)} autoFocus />
+                  <IconButton aria-label="Update todo" icon={<FaPlus />} onClick={() => handleUpdateTodo(index, editInput)} />
+                </ListItem>
+              );
+            }
+            return (
+              <ListItem key={index} display="flex" justifyContent="space-between" alignItems="center" _hover={{ bg: "gray.100" }} p={2} borderRadius="md">
+                <Text>{todo}</Text>
+                <HStack>
+                  <IconButton aria-label="Edit todo" icon={<FaEdit />} onClick={() => handleEditTodo(index)} />
+                  <IconButton aria-label="Delete todo" icon={<FaTrash />} onClick={() => handleDeleteTodo(index)} />
+                </HStack>
+              </ListItem>
+            );
+          })}
         </List>
       </VStack>
       <Text as="footer" color="gray.600" width="full" textAlign="center" mt={10}>
